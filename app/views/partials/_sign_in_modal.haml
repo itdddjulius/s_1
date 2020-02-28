@@ -9,7 +9,7 @@
         = form_tag(authentication_index_path) do
           .form-group
             %label{for: "exampleInputEmail1"} Email address
-            = text_field :user, :email, class: 'form-control', placeholder: "Enter email", "aria-describedby" => "emailHelp", type: "email"
+            = text_field :user, :username, class: 'form-control', placeholder: "Enter email", "aria-describedby" => "emailHelp", type: "email"
             %small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
           .form-group
             %label{for: "exampleInputPassword1"} Password
