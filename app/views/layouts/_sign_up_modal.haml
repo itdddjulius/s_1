@@ -1,0 +1,12 @@
+#signUpModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "signUpModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog{role: "document"}
+    .modal-content
+      .modal-header
+        %h5#signUpModalLabel.modal-title Modal title
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        \...
+      .modal-footer
+        %button.btn.btn-secondary{"data-dismiss" => "modal", type: "button"} Close
+        %button.btn.btn-primary{type: "button"} Save changes

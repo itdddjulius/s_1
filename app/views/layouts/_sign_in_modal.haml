@@ -1,0 +1,17 @@
+#signInModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "signInModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog{role: "document"}
+    .modal-content
+      .modal-header
+        %h5#signInModalLabel.modal-title Sign In
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        = form_tag(authentication_index_path) do
+          .form-group
+            %label{for: "exampleInputEmail1"} Email address
+            = text_field :user, :email, class: 'form-control', placeholder: "Enter email", "aria-describedby" => "emailHelp", type: "email"
+            %small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+          .form-group
+            %label{for: "exampleInputPassword1"} Password
+            = text_field :user, :password, class: 'form-control', placeholder: "Password", type: "password"
+          = submit_tag 'Submit', class: 'btn btn-primary'

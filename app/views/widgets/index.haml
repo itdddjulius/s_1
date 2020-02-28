@@ -1,0 +1,22 @@
+.container
+
+  %h1 Widgets
+
+  %table.table
+    %thead
+      %th Name
+      %th Description
+      %th Kind
+      %th User
+    %tbody
+      - @widgets.each do |widget|
+        %tr
+          %td
+            %b= widget.name
+          %td
+            %p= widget.description
+          %td
+            %span= widget.kind
+          %td
+            = image_tag widget.user.images.small_url, alt: widget.user.name, size: 30
+            %i= widget.user.name
