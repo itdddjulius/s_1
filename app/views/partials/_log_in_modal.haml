@@ -8,10 +8,10 @@
       .modal-body
         = form_tag(authentication_index_path) do
           .form-group
-            %label{ for: 'user_email' } Email address
-            = text_field :user, :email, class: 'form-control', placeholder: 'Enter email', 'aria-describedby' => 'emailHelp', type: 'email'
+            %label{ for: 'authentication_email' } Email address
+            = text_field :authentication, :email, class: 'form-control', placeholder: 'Enter email', 'aria-describedby' => 'emailHelp', type: 'email'
             %small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
           .form-group
-            %label{ for: 'user_password' } Password
-            = text_field :user, :password, class: 'form-control', placeholder: 'Password', type: 'password'
+            %label{ for: 'authentication_password' } Password
+            = text_field :authentication, :password, class: 'form-control', placeholder: 'Password', type: 'password'
           = submit_tag 'Submit', class: 'btn btn-primary'

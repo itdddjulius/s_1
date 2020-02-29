@@ -18,17 +18,19 @@ class ApplicationController < ActionController::Base
   end
 
   def auth_headers
-     @auth_headers = {
-      'Content-Type': 'application/json'
-    }
-    @auth_headers.merge!('Authorization': "Bearer #{@token}") if @token
+    @auth_headers = { 'Content-Type': 'application/json' }
+    @auth_headers.merge!('Authorization': "Bearer #{session[:access_token]}") if session[:access_token]
   end
 
   def authorization
     url = "#{SHOWOFF_API_ROOT}/oauth/token"
     payload = @current_user ? refresh_payload : login_payload
     auth_response = RestClient.post(url, payload, auth_headers)
-    @token = ActiveSupport::JSON.decode(auth_response.body).data.token.access_token if auth_response
+    return unless auth_response
+
+    tokens = ActiveSupport::JSON.decode(auth_response.body).data.token
+    session[:access_token] = tokens.access_token
+    session[:refresh_token] = tokens.refresh_token
   end
 
   def current_user
@@ -51,7 +53,7 @@ class ApplicationController < ActionController::Base
   def refresh_payload
     {
       grant_type: "refresh_token",
-      refresh_token: @token,
+      refresh_token: session[:access_token],
       client_id: @client_id,
       client_secret: @client_secret
     }

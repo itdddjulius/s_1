@@ -1,7 +1,19 @@
 !!!
 %html
   %head
-    %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
+    %meta{content: 'width=device-width, initial-scale=1.0', name: 'viewport'}
+    %meta{content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-type'}
+    %meta{content: 'This is a Showoff test', name: 'description'}
+    %meta{content: 'Showoff, Ruby on Rails, Test', name: 'keywords'}
+    %meta{content: '#ff3000', name: 'theme-color'}
+    %meta{content: 'summary', name: 'twitter:card'}
+    %meta{content: '@showoff_ie', name: 'twitter:site'}
+    %meta{content: 'Showoff Development Test', name: 'twitter:title'}
+    %meta{content: 'This is a Showoff test', name: 'twitter:description'}
+    %meta{content: 'Showoff', property: 'og:title'}
+    %meta{content: 'https://showoff.ie/', property: 'og:url'}
+    %meta{content: 'This is a Showoff test', property: 'og:description'}
+    %link{href: 'http://showoff.ie/assets/favicons/favicon-16x16-c7b9d022d6a6d8235b21c13801cead86a745d2e4fe60c36849e577a740af79e8.png', rel: "icon", sizes: "16x16", type: "image/png"}
     %title Showoff
     = csrf_meta_tags
     = csp_meta_tag

@@ -1,0 +1,7 @@
+.card.mb-3
+  .user-image{ style: "background: url(#{@user.images.large_url}) no-repeat; height: 300px;" }
+  .card-body
+    %h5.card-title= @user.name
+    %p.card-text This is a description for the user
+    %p.card-text
+      %small.text-muted Last updated 3 mins ago

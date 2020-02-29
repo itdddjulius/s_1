@@ -8,17 +8,15 @@ Rails.application.routes.draw do
     post :refresh, on: :collection
   end
 
-  resources :users, except: %i[new edit destroy] do
-    get :me
+  resources :users, except: %i[index new edit destroy] do
+    get :me, on: :collection
     post :change_password
     get :check_email
     post :reset_password
   end
 
-  resources :widgets, except: %i[new edit] do
-    scope :visible do
-      get :index, on: :collection
-      get :search, on: :collection
-    end
+  resources :widgets, except: %i[new edit show] do
+    get :search, on: :collection
+    get :mine, on: :collection
   end
 end

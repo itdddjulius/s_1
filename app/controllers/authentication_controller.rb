@@ -5,6 +5,8 @@ class AuthenticationController < ApplicationController
 
   # revoke_authentication_index POST   /authentication/revoke(.:format)
   def revoke
+    revoke_url = "#{SHOWOFF_API_ROOT}/oauth/token"
+    response = authenticate(revoke_url)
   end
   
   # refresh_authentication_index POST   /authentication/refresh(.:format)
@@ -14,14 +16,7 @@ class AuthenticationController < ApplicationController
   # authentication_index POST   /authentication(.:format) 
   def create
     login_url = "#{SHOWOFF_API_ROOT}/oauth/token"
-    begin
-      response = RestClient.post(login_url, payload)
-    rescue RestClient::UnprocessableEntity => e
-      e.response
-    rescue RestClient::ExceptionWithResponse => e
-      e.response
-    end
-
+    response = authenticate(login_url)
     status_code = response&.code
     response_message = ActiveSupport::JSON.decode(response&.body).message rescue 'Unknown Error'
     success = status_code.eql?(200)
@@ -36,18 +31,26 @@ class AuthenticationController < ApplicationController
 
   private
 
-  def payload
+  def authenticate(url)
+    RestClient.post(url, auth_payload)
+  rescue RestClient::UnprocessableEntity => e
+    e.response
+  rescue RestClient::ExceptionWithResponse => e
+    e.response
+  end
+
+  def auth_payload
     {
       grant_type: 'password',
       client_id: @client_id,
       client_secret: @client_secret,
-      username: user_authentication_params[:email],
-      password: user_authentication_params[:password]
-    }.to_json
+      username: auth_params[:email],
+      password: auth_params[:password]
+    }
   end
 
-  def user_authentication_params
-    params.require(:user).permit(
+  def auth_params
+    params.require(:authentication).permit(
       :email,
       :password
     )

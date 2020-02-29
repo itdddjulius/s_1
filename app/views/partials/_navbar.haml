@@ -21,10 +21,10 @@
           = image_tag @current_user.images.small_url, alt: @current_user.name, height: 20, class: 'circle mx-2'
           = @current_user.name
         .dropdown-menu{"aria-labelledby" => "navbarDropdown"}
-          = link_to 'My Widgets', widgets_path, class: 'dropdown-item'
-          %a.dropdown-item{href: "#"} Another action
+          = link_to 'My Profile', me_users_path, class: 'dropdown-item'
+          = link_to 'My Widgets', mine_widgets_path, class: 'dropdown-item'
           .dropdown-divider
-          = link_to 'Log Out', revoke_authentication_index_path, class: 'dropdown-item'
+          = link_to 'Log Out', revoke_authentication_index_path, method: :post, class: 'dropdown-item'
     - else
       %button.btn.btn-primary.mx-1{"data-target" => "#logInModal", "data-toggle" => "modal", type: "button"}
         Log in
