@@ -2,41 +2,44 @@
 
 # Authentication Controller
 class AuthenticationController < ApplicationController
+  before_action :auth_url
 
   # revoke_authentication_index POST   /authentication/revoke(.:format)
   def revoke
-    revoke_url = "#{SHOWOFF_API_ROOT}/oauth/token"
-    response = authenticate(revoke_url)
-  end
-  
-  # refresh_authentication_index POST   /authentication/refresh(.:format)
-  def refresh
+    revoke_url = "#{SHOWOFF_API_ROOT}/oauth/revoke"
+    revoke_response = authenticate(revoke_url, { token: session[:access_token] })
+    if revoke_response
+      message = Decode.json(revoke_response.body).data.message
+      flash[:notice] = message
+      reset_session
+    else
+      flash[:error] = 'You can\'t go out. You are trapped'
+    end
+
+    redirect_back fallback_location: root_path
   end
   
   # authentication_index POST   /authentication(.:format) 
   def create
-    login_url = "#{SHOWOFF_API_ROOT}/oauth/token"
-    response = authenticate(login_url)
-    status_code = response&.code
-    response_message = ActiveSupport::JSON.decode(response&.body).message rescue 'Unknown Error'
-    success = status_code.eql?(200)
-    if success
-      flash[:notice] = response_message
-    else
-      flash[:error] = response_message
-    end
+    login_response = authenticate(@auth_url, auth_payload)
+    
+    decoded_response = Decode.json(login_response.body)
+    success = decoded_response.code.eql?(200)
+    flash[success ? :notice : :error] = decoded_response.message 
+    session[:access_token] = decoded_response.data.token.access_token
+    session[:refresh_token] = decoded_response.data.token.refresh_token
 
-    redirect_to root_path
+    redirect_back fallback_location: root_path
   end
 
   private
 
-  def authenticate(url)
-    RestClient.post(url, auth_payload)
-  rescue RestClient::UnprocessableEntity => e
-    e.response
-  rescue RestClient::ExceptionWithResponse => e
-    e.response
+  def auth_url
+    @auth_url = "#{SHOWOFF_API_ROOT}/oauth/token"
+  end
+
+  def authenticate(url, payload)
+    RestClient.post(url, payload, @auth_headers) rescue nil
   end
 
   def auth_payload

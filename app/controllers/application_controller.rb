@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   before_action :client
-  before_action :user
   before_action :auth_headers
   before_action :authorization
   before_action :current_user
@@ -12,30 +11,27 @@ class ApplicationController < ActionController::Base
     @client_secret = Rails.application.secrets.client_secret
   end
 
-  def user
-    @user_email = Rails.application.secrets.user_email
-    @user_password = Rails.application.secrets.user_password
-  end
-
   def auth_headers
     @auth_headers = { 'Content-Type': 'application/json' }
     @auth_headers.merge!('Authorization': "Bearer #{session[:access_token]}") if session[:access_token]
   end
 
   def authorization
+    return if session[:access_token] && session[:refresh_token]
+
     url = "#{SHOWOFF_API_ROOT}/oauth/token"
     payload = @current_user ? refresh_payload : login_payload
-    auth_response = RestClient.post(url, payload, auth_headers)
+    auth_response = RestClient.post(url, payload, auth_headers) rescue nil
     return unless auth_response
 
-    tokens = ActiveSupport::JSON.decode(auth_response.body).data.token
+    tokens = Decode.json(auth_response.body).data.token
     session[:access_token] = tokens.access_token
     session[:refresh_token] = tokens.refresh_token
   end
 
   def current_user
     user_response = RestClient.get("#{SHOWOFF_API_ROOT}/api/v1/users/me", auth_headers) rescue nil
-    @current_user = ActiveSupport::JSON.decode(user_response.body).data.user if user_response
+    @current_user = Decode.json(user_response.body).data.user if user_response
   end
 
   protected

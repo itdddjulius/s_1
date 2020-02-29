@@ -5,7 +5,6 @@ Rails.application.routes.draw do
 
   resources :authentication, only: %i[create] do
     post :revoke, on: :collection
-    post :refresh, on: :collection
   end
 
   resources :users, except: %i[index new edit destroy] do

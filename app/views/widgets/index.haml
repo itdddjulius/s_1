@@ -1,6 +1,14 @@
 .container
 
-  %h1.mt-5 Visible Widgets
+  .mt-5
+    .float-left
+      %h1 Visible Widgets
+      = flash
+      = flash.map { |x,y| [x,y] }
+    .float-right
+      - if @current_user
+        = link_to 'Create Widget', '#', 'data-target' => "#createWidgetModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
+        = render 'create_widget_modal'
 
   %table.table
     %thead

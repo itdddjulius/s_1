@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def me
     url = "#{SHOWOFF_API_ROOT}/api/v1/users/me"
     user_response = RestClient.get(url, @auth_headers)
-    @user = ActiveSupport::JSON.decode(user_response.body).data.user
+    @user = Decode.json(user_response.body).data.user
   end
   
   # user_change_password POST   /users/:user_id/change_password(.:format)
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   def show
     url = "#{SHOWOFF_API_ROOT}/api/v1/users/#{params[:id]}"
     user_response = RestClient.get(url, @auth_headers)
-    @user = ActiveSupport::JSON.decode(user_response.body).data.user
+    @user = Decode.json(user_response.body).data.user
   end
   
   # PATCH or PUT /users/:id(.:format)
