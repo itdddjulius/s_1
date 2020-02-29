@@ -1,22 +1,24 @@
 .container
 
-  %h1 Widgets
+  %h1.mt-5 Visible Widgets
 
   %table.table
     %thead
-      %th Name
-      %th Description
-      %th Kind
-      %th User
+      %th NAME
+      %th DESCRIPTION
+      %th KIND
+      %th USER
     %tbody
       - @widgets.each do |widget|
         %tr
           %td
-            %b= widget.name
+            %span= widget.name
           %td
-            %p= widget.description
+            %small= widget.description
           %td
             %span= widget.kind
           %td
-            = image_tag widget.user.images.small_url, alt: widget.user.name, size: 30
-            %i= widget.user.name
+            = link_to '#', 'data-target' => "#userShowModal-#{widget.user.id}", 'data-toggle' => 'modal', type: 'button' do
+              = image_tag widget.user.images.small_url, alt: widget.user.name, height: 30
+              %i= widget.user.name
+        = render '/users/show', user: widget.user

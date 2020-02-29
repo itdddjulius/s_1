@@ -8,14 +8,14 @@ Rails.application.routes.draw do
     post :refresh, on: :collection
   end
 
-  resources :users, except: %i[destroy] do
+  resources :users, except: %i[new edit destroy] do
     get :me
     post :change_password
     get :check_email
     post :reset_password
   end
 
-  resources :widgets do
+  resources :widgets, except: %i[new edit] do
     scope :visible do
       get :index, on: :collection
       get :search, on: :collection

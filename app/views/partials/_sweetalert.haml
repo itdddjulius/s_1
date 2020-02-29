@@ -1,0 +1,4 @@
+- flash.each do |status, message|
+  - if message.is_a?(String)
+    :javascript
+      sweetalert("#{message}", "#{status}")

@@ -37,6 +37,8 @@ class UsersController < ApplicationController
   
   # user GET    /users/:id(.:format)
   def show
+    response = RestClient.get("#{SHOWOFF_API_ROOT}/api/v1/users/#{params[:id]}")
+    @user = ActiveSupport::JSON.decode(response.body).data.user
   end
   
   # PATCH or PUT /users/:id(.:format)

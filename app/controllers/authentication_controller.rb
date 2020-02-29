@@ -14,10 +14,23 @@ class AuthenticationController < ApplicationController
   # authentication_index POST   /authentication(.:format) 
   def create
     login_url = "#{SHOWOFF_API_ROOT}/oauth/token"
-    response = RestClient.post(login_url, payload, @authorization_hash).code
-    status_code = response.code
-    response_message = ActiveSupport::JSON.decode(response.body)['message']
-    flash[status_code.eql?(200) ? :notice : :error] = response_message
+    begin
+      response = RestClient.post(login_url, payload)
+    rescue RestClient::UnprocessableEntity => e
+      e.response
+    rescue RestClient::ExceptionWithResponse => e
+      e.response
+    end
+
+    status_code = response&.code
+    response_message = ActiveSupport::JSON.decode(response&.body).message rescue 'Unknown Error'
+    success = status_code.eql?(200)
+    if success
+      flash[:notice] = response_message
+    else
+      flash[:error] = response_message
+    end
+
     redirect_to root_path
   end
 
@@ -25,15 +38,17 @@ class AuthenticationController < ApplicationController
 
   def payload
     {
-      grant_type: "password",
+      grant_type: 'password',
       client_id: @client_id,
-      client_secret: @client_secret
-    }
+      client_secret: @client_secret,
+      username: user_authentication_params[:email],
+      password: user_authentication_params[:password]
+    }.to_json
   end
 
-  def authentication_params
+  def user_authentication_params
     params.require(:user).permit(
-      :username,
+      :email,
       :password
     )
   end
