@@ -73,6 +73,9 @@ gem 'rest-client'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  # rspec-rails brings the RSpec testing framework to Ruby on Rails as a drop-in 
+  # alternative to its default testing framework, Minitest.
+  gem 'rspec-rails', '3.8.2'
 end
 
 # Access to Hashes using dot notation

@@ -6,35 +6,23 @@ This is a Showoff test that consumes an API to handle widgets and user authentic
 Ruby 2.5.1
 Rails 5.2.4
 
-## Custom Gems
+## Additional Gems
 ```ruby
 gem 'haml-rails', '~> 2.0' # Convert html.erb to Haml
-```
-
-```ruby
 gem 'rest-client' # Requests to APIs
-```
-
-```ruby
-group :development do
-  gem 'better_errors' # See errors console on web
-  gem 'binding_of_caller'
-end
-```
-
-```ruby
+gem 'better_errors' # See errors console on web
 gem 'hash_dot' # Access to Hashes using dot notation
 ```
 
 ## Installation
 ```bash
-$ cd Showoff
+cd /path/to/Showoff
 ```
 ```bash
-$ bundle install
+bundle install
 ```
 ```bash
-$ rails s
+rails s
 ```
 
 ## Usage
@@ -72,3 +60,5 @@ $ rails s
   - List of my widgets
   - Search bar to look fot my widgets
   - Create Widget button
+
+[Go to app](https://showoff-anyelo-test.herokuapp.com/)
