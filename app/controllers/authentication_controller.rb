@@ -2,15 +2,18 @@
 
 # Authentication Controller
 class AuthenticationController < ApplicationController
-  before_action :auth_url
+  include Tokenable
+  include Payloadable
+  include ApiRoutable
+  include ApiRequestable
+  include Flashable
+  include Permitable
 
   # revoke_authentication_index POST   /authentication/revoke(.:format)
   def revoke
-    revoke_url = "#{API_ROOT}/oauth/revoke"
-    revoke_response = ShowoffAPI.post(revoke_url, revoke_payload, @auth_headers)
+    revoke_response = post(revoke_url, revoke_payload)
     if revoke_response
-      message = revoke_response&.data&.message
-      flash[:notice] = message
+      flash_message(revoke_response)
       reset_session
     else
       flash[:error] = 'You can\'t go out. You are trapped'
@@ -21,38 +24,10 @@ class AuthenticationController < ApplicationController
   
   # authentication_index POST   /authentication(.:format) 
   def create
-    login_response = ShowoffAPI.post(@auth_url, auth_payload, @auth_headers)
-    success = login_response.code.zero?
-    flash[success ? :notice : :error] = login_response.message
+    login_response = post(oauth_token_url, auth_payload)
+    flash_message(login_response)
     set_tokens(login_response)
 
     redirect_back fallback_location: root_path
-  end
-
-  private
-
-  def auth_url
-    @auth_url = "#{API_ROOT}/oauth/token"
-  end
-
-  def revoke_payload
-    { token: session[:access_token] }
-  end
-
-  def auth_payload
-    {
-      grant_type: 'password',
-      client_id: @client_id,
-      client_secret: @client_secret,
-      username: auth_params[:email],
-      password: auth_params[:password]
-    }
-  end
-
-  def auth_params
-    params.require(:authentication).permit(
-      :email,
-      :password
-    )
   end
 end

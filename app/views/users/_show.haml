@@ -9,9 +9,6 @@
           = link_to 'Change password', '#', 'data-target' => "#changePasswordModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
       %h5.card-title= @user.name
       %b= @user.try(:email)
-      - if @user.try(:date_of_birth)
-        %p.card-text
-          %small.text-muted Date of birth: #{Time.at(@user.date_of_birth).strftime('%a %d %b %Y')}
 
   .table-header.mt-3.d-flex.justify-content-between
     .left
@@ -58,3 +55,4 @@
               = link_to 'Edit', '#', 'data-target' => "#editWidgetModal-#{widget.id}", 'data-toggle' => 'modal'
             %td
               = link_to 'Delete', widget_path(widget.id), method: :delete, data: { confirm: 'Are you sure?' }
+          = render '/widgets/edit', widget: widget

@@ -21,9 +21,6 @@
             %label{ for: 'registration_password' } Password
             = f.password_field :password, class: 'form-control'
             %small#password_validation
-          .form-group
-            %label{ for: 'registration_date_of_birth' } Date of birth
-            = f.date_field :date_of_birth, class: 'form-control'
           = f.submit 'Submit', class: 'btn btn-primary'
 
 :javascript

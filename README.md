@@ -1,10 +1,10 @@
-# SHOWOFF
+# Showoff Widgets Test App
 
 This is a Showoff test that consumes an API to handle widgets and user authentication
 
 ## Specifications
-Ruby 2.5.1
-Rails 5.2.4
+- Ruby 2.5.1
+- Rails 5.2.4
 
 ## Additional Gems
 ```ruby
@@ -26,7 +26,7 @@ rails s
 ```
 
 ## Usage
-1 Navbar:
+1. Navbar:
   - Search bar to look for some visible widgets
   - If you're logged in
     - A dropdown with options:
@@ -51,7 +51,6 @@ rails s
     - Change Password Modal Button
   - User's Name
   - User's Email
-  - User's Date of Birth
   - List of User's widgets
   - Search bar to look fot User's widgets
   - Create User's Widget button

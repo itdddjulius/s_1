@@ -16,7 +16,4 @@
           .form-group
             %label{ for: 'user_email' } Email
             = f.text_field :email, class: 'form-control', value: @user.email
-          .form-group
-            %label{ for: 'user_date_of_birth' } Date of birth
-            = f.date_field :date_of_birth, class: 'form-control', value: @user.date_of_birth
           = f.submit 'Submit', class: 'btn btn-primary'

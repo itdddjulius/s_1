@@ -69,13 +69,17 @@ gem 'haml-rails', '~> 2.0'
 # Requests to APIs
 gem 'rest-client'
 
-# See errors console on web
 group :development do
+  # Better Errors replaces the standard Rails error page with a much better and
+  # more useful error page. It is also usable outside of Rails in any Rack app as Rack middleware.
   gem 'better_errors'
   gem 'binding_of_caller'
   # rspec-rails brings the RSpec testing framework to Ruby on Rails as a drop-in 
   # alternative to its default testing framework, Minitest.
   gem 'rspec-rails', '3.8.2'
+  # Shoulda Matchers provides RSpec- and Minitest-compatible one-liners to test common Rails functionality that, 
+  # if written by hand, would be much longer, more complex, and error-prone.
+  gem 'shoulda-matchers', '~> 3.0', require: false
 end
 
 # Access to Hashes using dot notation

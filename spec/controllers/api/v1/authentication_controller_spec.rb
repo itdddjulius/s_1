@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::AdministratorsController, type: :controller do
+RSpec.describe AuthenticationController, type: :controller do
   let(:user) { create(user_assigned) }
 
   context 'without an authenticated user' do
