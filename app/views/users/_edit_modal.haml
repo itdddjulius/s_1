@@ -1,0 +1,22 @@
+.modal.fade{ id: "editUserModal", 'aria-hidden' => 'true', 'aria-labelledby' => 'editUserModalLabel', role: 'dialog', tabindex: '-1' }
+  .modal-dialog{ role: 'document' }
+    .modal-content
+      .modal-header
+        %h5#editUserModalLabel.modal-title Edit Widget
+        %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', type: 'button' }
+          %span{ 'aria-hidden' => 'true' } ×
+      .modal-body
+        = form_for :user, url: update_my_profile_users_path, method: :patch, multipart: true do |f|
+          .form-group
+            %label{ for: 'user_first_name' } First name
+            = f.text_field :first_name, class: 'form-control', value: @user.first_name
+          .form-group
+            %label{ for: 'user_last_name' } Last name
+            = f.text_field :last_name, class: 'form-control', value: @user.last_name
+          .form-group
+            %label{ for: 'user_email' } Email
+            = f.text_field :email, class: 'form-control', value: @user.email
+          .form-group
+            %label{ for: 'user_date_of_birth' } Date of birth
+            = f.date_field :date_of_birth, class: 'form-control', value: @user.date_of_birth
+          = f.submit 'Submit', class: 'btn btn-primary'

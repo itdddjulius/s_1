@@ -6,10 +6,10 @@ class AuthenticationController < ApplicationController
 
   # revoke_authentication_index POST   /authentication/revoke(.:format)
   def revoke
-    revoke_url = "#{SHOWOFF_API_ROOT}/oauth/revoke"
-    revoke_response = authenticate(revoke_url, { token: session[:access_token] })
+    revoke_url = "#{API_ROOT}/oauth/revoke"
+    revoke_response = ShowoffAPI.post(revoke_url, revoke_payload, @auth_headers)
     if revoke_response
-      message = Decode.json(revoke_response.body).data.message
+      message = revoke_response&.data&.message
       flash[:notice] = message
       reset_session
     else
@@ -21,13 +21,12 @@ class AuthenticationController < ApplicationController
   
   # authentication_index POST   /authentication(.:format) 
   def create
-    login_response = authenticate(@auth_url, auth_payload)
-    success = login_response.code.eql?(200)
-    decoded_response = Decode.json(login_response.body)
-    flash[success ? :notice : :error] = decoded_response.message
-    if decoded_response.data
-      session[:access_token] = decoded_response.data.token.access_token
-      session[:refresh_token] = decoded_response.data.token.refresh_token
+    login_response = ShowoffAPI.post(@auth_url, auth_payload, @auth_headers)
+    success = login_response.code.zero?
+    flash[success ? :notice : :error] = login_response.message
+    if login_response.data
+      session[:access_token] = login_response.data.token.access_token
+      session[:refresh_token] = login_response.data.token.refresh_token
     end
 
     redirect_back fallback_location: root_path
@@ -36,11 +35,11 @@ class AuthenticationController < ApplicationController
   private
 
   def auth_url
-    @auth_url = "#{SHOWOFF_API_ROOT}/oauth/token"
+    @auth_url = "#{API_ROOT}/oauth/token"
   end
 
-  def authenticate(url, payload)
-    ShowoffAPI.post(url, payload, @auth_headers)
+  def revoke_payload
+    { token: session[:access_token] }
   end
 
   def auth_payload

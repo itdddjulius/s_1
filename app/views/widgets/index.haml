@@ -9,25 +9,31 @@
         = render 'create'
 
   %table.table
-    %thead
-      %th ID
-      %th NAME
-      %th DESCRIPTION
-      %th KIND
-      %th USER
-    %tbody
-      - @widgets.each do |widget|
-        %tr
-          %td
-            %span= widget.id
-          %td
-            %span= widget.name
-          %td
-            %small= widget.description
-          %td
-            %span= widget.kind
-          %td
-            = link_to '#', 'data-target' => "#userShowModal-#{widget.user.id}", 'data-toggle' => 'modal', type: 'button' do
-              = image_tag widget.user.images.small_url, alt: widget.user.name, height: 30
-              %i= widget.user.name
-        = render '/users/show', user: widget.user
+    - if @widgets.blank?
+      %thead
+        %td Sorry, we couldn't find the expected result. We will work harder next time :)
+    - else
+      %thead
+        %th ID
+        %th NAME
+        %th DESCRIPTION
+        %th KIND
+        %th USER
+      %tbody
+        - @widgets.each do |widget|
+          %tr
+            %td
+              %span= widget.id
+            %td
+              %span= widget.name
+            %td
+              %small= widget.description
+            %td
+              %span= widget.kind
+            %td
+              = link_to '#', 'data-target' => "#userShowModal-#{widget.user.id}", 'data-toggle' => 'modal', type: 'button' do
+                = image_tag widget.user.images.small_url, alt: widget.user.name, height: 30
+                %i= widget.user.name
+          = render '/users/show_modal', user: widget.user
+
+  = link_to_if @widgets.blank?, 'Go home', root_path

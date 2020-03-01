@@ -1,12 +1,25 @@
-#signUpModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "signUpModalLabel", role: "dialog", tabindex: "-1"}
-  .modal-dialog{role: "document"}
+#signUpModal.modal.fade{ 'aria-hidden' => 'true', 'aria-labelledby' => 'signUpModalLabel', role: 'dialog', tabindex: '-1' }
+  .modal-dialog{ role: 'document' }
     .modal-content
       .modal-header
-        %h5#signUpModalLabel.modal-title Modal title
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", type: "button"}
-          %span{"aria-hidden" => "true"} ×
+        %h5#signUpModalLabel.modal-title Sign Up
+        %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', type: 'button' }
+          %span{ 'aria-hidden' => 'true' } ×
       .modal-body
-        \...
-      .modal-footer
-        %button.btn.btn-secondary{"data-dismiss" => "modal", type: "button"} Close
-        %button.btn.btn-primary{type: "button"} Save changes
+        = form_for :authentication, url: users_path do |f|
+          .form-group
+            %label{ for: 'authentication_first_name' } First name
+            = f.text_field :first_name, class: 'form-control'
+          .form-group
+            %label{ for: 'authentication_last_name' } Last name
+            = f.text_field :last_name, class: 'form-control'
+          .form-group
+            %label{ for: 'authentication_email' } Email
+            = f.email_field :email, class: 'form-control'
+          .form-group
+            %label{ for: 'authentication_password' } Password
+            = f.password_field :password, class: 'form-control'
+          .form-group
+            %label{ for: 'authentication_date_of_birth' } Date of birth
+            = f.date_field :date_of_birth, class: 'form-control'
+          = f.submit 'Submit', class: 'btn btn-primary'

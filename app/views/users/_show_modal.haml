@@ -1,0 +1,8 @@
+.modal.fade{ id: "userShowModal-#{user.id}", 'aria-hidden' => 'true', 'aria-labelledby' => 'userShowModalLabel', role: 'dialog', tabindex: '-1' }
+  .modal-dialog{ role: 'document' }
+    .modal-content
+      .card.bg-dark.text-white
+        = image_tag user.images.small_url, class: 'card-img'
+        .card-img-overlay
+          %h5.card-title= user.name
+          = link_to 'Go to profile', user_path(user.id), class: 'btn btn-primary'

@@ -1,8 +1,51 @@
-.modal.fade{ id: "userShowModal-#{user.id}", 'aria-hidden' => 'true', 'aria-labelledby' => 'userShowModalLabel', role: 'dialog', tabindex: '-1' }
-  .modal-dialog{ role: 'document' }
-    .modal-content
-      .card.bg-dark.text-white
-        = image_tag user.images.small_url, class: 'card-img'
-        .card-img-overlay
-          %h5.card-title= user.name
-          = link_to 'Go to profile', user_path(user.id), class: 'btn btn-primary'
+.container.mb-5
+  .card.mb-3
+    .card-body
+      = image_tag @user.images.large_url, alt: @user.name, size: 200
+      %br
+      - if @user.eql?(@current_user)
+        = link_to 'Edit profile', '#', 'data-target' => "#editUserModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary my-3'
+      %h5.card-title= @user.name
+      %b= @user.try(:email)
+      - if @user.try(:date_of_birth)
+        %p.card-text
+          %small.text-muted Birthdate: #{Time.at(@user.date_of_birth).strftime('%a %d %b %Y')}
+
+  .table-header.mt-3
+    .float-left
+      %h3 Widgets by #{@user.name}
+    .float-right
+      = form_tag(search_widgets_path, method: :get, class: 'form-inline my-2 my-lg-0') do
+        = text_field_tag :term, nil, placeholder: 'Search a widget...', class: 'form-control mr-sm-2', input_html: {"aria-label" => "Search", placeholder: "Search", type: "search"}
+        = submit_tag 'Search', class: 'btn btn-outline-success my-2 my-sm-0 mx-1'
+      - if @current_user.eql?(@user)
+        = link_to 'Create Widget', '#', 'data-target' => "#createWidgetModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
+        = render '/widgets/create'
+  %table.table
+    - if @widgets.blank?
+      %thead
+        %td
+          = @current_user.eql?(@user) ? 'You have not' : 'This user hasn\'t'
+          created any widget :(
+    - else
+      %thead
+        %th ID
+        %th NAME
+        %th DESCRIPTION
+        %th KIND
+        %th USER
+      %tbody
+        - @widgets.each do |widget|
+          %tr
+            %td
+              %span= widget.id
+            %td
+              %span= widget.name
+            %td
+              %small= widget.description
+            %td
+              %span= widget.kind
+            %td
+              = link_to '#', 'data-target' => "#userShowModal-#{widget.user.id}", 'data-toggle' => 'modal', type: 'button' do
+                = image_tag widget.user.images.small_url, alt: widget.user.name, height: 30
+                %i= widget.user.name

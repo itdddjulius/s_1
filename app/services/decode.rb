@@ -3,6 +3,6 @@
 # Decoder Service
 class Decode
   def self.json(body)
-    ActiveSupport::JSON.decode(body)
+    ActiveSupport::JSON.decode(body) rescue body
   end
 end

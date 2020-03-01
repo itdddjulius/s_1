@@ -12,7 +12,8 @@ Rails.application.routes.draw do
     patch :update_my_profile, on: :collection
     post :change_password
     get :check_email
-    post :reset_password
+    post :reset_password, on: :collection
+    get :search_widgets
   end
 
   resources :widgets, except: %i[new edit show] do

@@ -2,18 +2,9 @@
   %a.navbar-brand{href: root_path} Showoff
   %button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarSupportedContent", "data-toggle" => "collapse", type: "button"}
     %span.navbar-toggler-icon
-  #navbarSupportedContent.collapse.navbar-collapse
-    %ul.navbar-nav.mr-auto
-      %li.nav-item.active
-        %a.nav-link{href: widgets_path}
-          Widgets
-          %span.sr-only (current)
-      %li.nav-item
-        %a.nav-link{href: "#"} Link
-      %li.nav-item
-        %a.nav-link.disabled{"aria-disabled" => "true", href: "#", tabindex: "-1"} Disabled
+  #navbarSupportedContent.collapse.navbar-collapse.flex.justify-content-between
     = form_tag(search_widgets_path, method: :get, class: 'form-inline my-2 my-lg-0') do
-      = text_field_tag :term, nil, placeholder: 'Enter search term...', class: 'form-control mr-sm-2', input_html: {"aria-label" => "Search", placeholder: "Search", type: "search"}
+      = text_field_tag :term, nil, placeholder: 'Search a widget...', class: 'form-control mr-sm-2', input_html: {"aria-label" => "Search", placeholder: "Search", type: "search"}
       = submit_tag 'Search', class: 'btn btn-outline-success my-2 my-sm-0 mx-1'
     - if @current_user
       .nav-item.dropdown
@@ -26,10 +17,11 @@
           .dropdown-divider
           = link_to 'Log Out', revoke_authentication_index_path, method: :post, class: 'dropdown-item'
     - else
-      %button.btn.btn-primary.mx-1{"data-target" => "#logInModal", "data-toggle" => "modal", type: "button"}
-        Log in
-      %button.btn.btn-primary.mx-1{"data-target" => "#signUpModal", "data-toggle" => "modal", type: "button"}
-        Sign up
+      .login_buttons
+        %button.btn.btn-primary.mx-1{"data-target" => "#logInModal", "data-toggle" => "modal", type: "button"}
+          Log in
+        %button.btn.btn-primary.mx-1{"data-target" => "#signUpModal", "data-toggle" => "modal", type: "button"}
+          Sign up
 
 = render '/partials/log_in_modal'
 = render '/partials/sign_up_modal'

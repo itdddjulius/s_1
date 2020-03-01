@@ -2,7 +2,7 @@
   .modal-dialog{ role: 'document' }
     .modal-content
       .modal-header
-        %h5#logInModalLabel.modal-title Sign In
+        %h5#logInModalLabel.modal-title Log In
         %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', type: 'button' }
           %span{ 'aria-hidden' => 'true' } ×
       .modal-body
@@ -15,3 +15,4 @@
             %label{ for: 'authentication_password' } Password
             = text_field :authentication, :password, class: 'form-control', placeholder: 'Password', type: 'password'
           = submit_tag 'Submit', class: 'btn btn-primary'
+        .my-3= link_to 'Reset password', reset_password_users_path

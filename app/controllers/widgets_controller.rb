@@ -8,7 +8,7 @@ class WidgetsController < ApplicationController
   def index
     index_url = "#{@visible_widgets_api_url}?#{@client_params}"
     widgets_response = ShowoffAPI.get(index_url, @auth_headers)
-    @widgets = Decode.json(widgets_response.body).data.widgets
+    @widgets = widgets_response&.data&.widgets
   end
 
   # search_widgets GET    /visible/widgets/search(.:format)
@@ -16,7 +16,7 @@ class WidgetsController < ApplicationController
     search_term = "term=#{params[:term]}"
     search_url = "#{@visible_widgets_api_url}?#{@client_params}&#{search_term}"
     widgets_response = ShowoffAPI.get(search_url, @auth_headers)
-    @widgets = Decode.json(widgets_response.body).data.widgets
+    @widgets = widgets_response&.data&.widgets
     
     render :index
   end
@@ -24,15 +24,16 @@ class WidgetsController < ApplicationController
   # mine_widgets GET    /widgets/mine(.:format)
   def mine
     widgets_response = ShowoffAPI.get(@my_widgets_api_url, @auth_headers)
-    @widgets = Decode.json(widgets_response.body).data.widgets
+    @widgets = widgets_response&.data&.widgets
   end
 
   # POST   /widgets(.:format)
   def create
     widget_response = ShowoffAPI.post(@my_widgets_api_url, widget_payload, @auth_headers)
-    success = widget_response.code.eql?(200)
-    response_message = Decode.json(widget_response.body).message
-    flash[success ? :notice : :error] = response_message
+    success = widget_response.code.zero?
+    flash[success ? :notice : :error] = widget_response.message
+    
+    redirect_back fallback_location: root_path
   end
 
   # PATCH  /widgets/:id(.:format) OR PUT    /widgets/:id(.:format)
@@ -56,9 +57,8 @@ class WidgetsController < ApplicationController
   private
 
   def visible_widgets_api_variables
-    @my_widgets_api_url = "#{SHOWOFF_API_ROOT}/api/v1/widgets"
-    @visible_widgets_api_url = "#{SHOWOFF_API_ROOT}/api/v1/widgets/visible"
-    @client_params = "client_id=#{@client_id}&client_secret=#{@client_secret}"
+    @my_widgets_api_url = "#{API_V1}/widgets"
+    @visible_widgets_api_url = "#{API_V1}/widgets/visible"
   end
 
   def widget_params

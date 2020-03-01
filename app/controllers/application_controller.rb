@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :auth_headers
   before_action :authorization
   before_action :current_user
+  before_action :client_params
 
   private
 
@@ -17,21 +18,22 @@ class ApplicationController < ActionController::Base
   end
 
   def authorization
-    return if session[:access_token] && session[:refresh_token]
-
-    url = "#{SHOWOFF_API_ROOT}/oauth/token"
+    url = "#{API_ROOT}/oauth/token"
     payload = @current_user ? refresh_payload : login_payload
-    auth_response = ShowoffAPI.post(url, payload, auth_headers) rescue nil
-    return unless auth_response
-
-    tokens = Decode.json(auth_response.body).data.token
-    session[:access_token] = tokens.access_token
-    session[:refresh_token] = tokens.refresh_token
+    auth_response = ShowoffAPI.post(url, payload, @auth_headers)
+    if auth_response&.data
+      session[:access_token] = auth_response.data.token.access_token
+      session[:refresh_token] = auth_response.data.token.refresh_token
+    end
   end
 
   def current_user
-    user_response = ShowoffAPI.get("#{SHOWOFF_API_ROOT}/api/v1/users/me", auth_headers) rescue nil
-    @current_user = Decode.json(user_response.body).data.user if user_response
+    user_response = ShowoffAPI.get("#{API_V1}/users/me", @auth_headers)
+    @current_user = user_response&.data&.user
+  end
+
+  def client_params
+    @client_params = "client_id=#{@client_id}&client_secret=#{@client_secret}"
   end
 
   protected
@@ -49,7 +51,7 @@ class ApplicationController < ActionController::Base
   def refresh_payload
     {
       grant_type: "refresh_token",
-      refresh_token: session[:access_token],
+      refresh_token: session[:refresh_token],
       client_id: @client_id,
       client_secret: @client_secret
     }
