@@ -22,12 +22,13 @@ class AuthenticationController < ApplicationController
   # authentication_index POST   /authentication(.:format) 
   def create
     login_response = authenticate(@auth_url, auth_payload)
-    
+    success = login_response.code.eql?(200)
     decoded_response = Decode.json(login_response.body)
-    success = decoded_response.code.eql?(200)
-    flash[success ? :notice : :error] = decoded_response.message 
-    session[:access_token] = decoded_response.data.token.access_token
-    session[:refresh_token] = decoded_response.data.token.refresh_token
+    flash[success ? :notice : :error] = decoded_response.message
+    if decoded_response.data
+      session[:access_token] = decoded_response.data.token.access_token
+      session[:refresh_token] = decoded_response.data.token.refresh_token
+    end
 
     redirect_back fallback_location: root_path
   end
@@ -39,7 +40,7 @@ class AuthenticationController < ApplicationController
   end
 
   def authenticate(url, payload)
-    RestClient.post(url, payload, @auth_headers) rescue nil
+    ShowoffAPI.post(url, payload, @auth_headers)
   end
 
   def auth_payload

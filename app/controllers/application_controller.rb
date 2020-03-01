@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 
     url = "#{SHOWOFF_API_ROOT}/oauth/token"
     payload = @current_user ? refresh_payload : login_payload
-    auth_response = RestClient.post(url, payload, auth_headers) rescue nil
+    auth_response = ShowoffAPI.post(url, payload, auth_headers) rescue nil
     return unless auth_response
 
     tokens = Decode.json(auth_response.body).data.token
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    user_response = RestClient.get("#{SHOWOFF_API_ROOT}/api/v1/users/me", auth_headers) rescue nil
+    user_response = ShowoffAPI.get("#{SHOWOFF_API_ROOT}/api/v1/users/me", auth_headers) rescue nil
     @current_user = Decode.json(user_response.body).data.user if user_response
   end
 

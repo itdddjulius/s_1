@@ -1,0 +1,24 @@
+.modal.fade{ id: "editWidgetModal-#{widget.id}", 'aria-hidden' => 'true', 'aria-labelledby' => 'editWidgetModalLabel', role: 'dialog', tabindex: '-1' }
+  .modal-dialog{ role: 'document' }
+    .modal-content
+      .modal-header
+        %h5#editWidgetModalLabel.modal-title Edit Widget
+        %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', type: 'button' }
+          %span{ 'aria-hidden' => 'true' } ×
+      .modal-body
+        = form_tag(widget_path(widget.id), method: :patch) do
+          .form-group
+            %label{ for: 'widget_email' } Name
+            = text_field :widget, :name, class: 'form-control', value: widget.name
+          .form-group
+            %label{ for: 'widget_password' } Description
+            = text_area :widget, :description, class: 'form-control', value: widget.description
+          .form-group
+            %label{ for: 'widget_password' } Kind
+            .custom-control.custom-radio
+              = radio_button :widget, :kind, 'visible', checked: widget.kind.eql?('visible'), class: 'custom-control-input'
+              %label.custom-control-label{for: "widget_kind_visible"} Visible
+            .custom-control.custom-radio
+              = radio_button :widget, :kind, 'hidden', checked: widget.kind.eql?('hidden'), class: 'custom-control-input'
+              %label.custom-control-label{for: "widget_kind_hidden"} Hidden
+          = submit_tag 'Submit', class: 'btn btn-primary'

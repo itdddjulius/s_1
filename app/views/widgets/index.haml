@@ -3,15 +3,14 @@
   .mt-5
     .float-left
       %h1 Visible Widgets
-      = flash
-      = flash.map { |x,y| [x,y] }
     .float-right
       - if @current_user
         = link_to 'Create Widget', '#', 'data-target' => "#createWidgetModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
-        = render 'create_widget_modal'
+        = render 'create'
 
   %table.table
     %thead
+      %th ID
       %th NAME
       %th DESCRIPTION
       %th KIND
@@ -19,6 +18,8 @@
     %tbody
       - @widgets.each do |widget|
         %tr
+          %td
+            %span= widget.id
           %td
             %span= widget.name
           %td

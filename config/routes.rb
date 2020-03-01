@@ -7,8 +7,9 @@ Rails.application.routes.draw do
     post :revoke, on: :collection
   end
 
-  resources :users, except: %i[index new edit destroy] do
+  resources :users, except: %i[index new edit update destroy] do
     get :me, on: :collection
+    patch :update_my_profile, on: :collection
     post :change_password
     get :check_email
     post :reset_password

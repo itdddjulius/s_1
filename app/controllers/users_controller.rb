@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # user_me GET    /users/:user_id/me(.:format)
   def me
     url = "#{SHOWOFF_API_ROOT}/api/v1/users/me"
-    user_response = RestClient.get(url, @auth_headers)
+    user_response = ShowoffAPI.get(url, @auth_headers)
     @user = Decode.json(user_response.body).data.user
   end
   
@@ -29,29 +29,35 @@ class UsersController < ApplicationController
   # user GET    /users/:id(.:format)
   def show
     url = "#{SHOWOFF_API_ROOT}/api/v1/users/#{params[:id]}"
-    user_response = RestClient.get(url, @auth_headers)
+    user_response = ShowoffAPI.get(url, @auth_headers)
     @user = Decode.json(user_response.body).data.user
   end
   
-  # PATCH or PUT /users/:id(.:format)
-  def update
+  # update_my_profile_users PATCH  /users/update_my_profile(.:format)
+  def update_my_profile
+    url = "#{SHOWOFF_API_ROOT}/api/v1/users/me"
+    user_response = ShowoffAPI.put(url, user_payload, @auth_headers)
+    success = user_response.code.eql?(200)
+    message = Decode.json(user_response.body).message if user_response.body
+    flash[success ? :notice : :error] = message || 'Bad request'
+
+    
+    redirect_back fallback_location: me_users_path
   end
 
   private
 
-  def authentication_params
-    params.permit(
-      :client_id,
-      :client_secret,
-      {
-        user: [
-          :first_name,
-          :last_name,
-          :password,
-          :email,
-          :image_url
-        ]
-      }
+  def user_params
+    params.require(:user).permit(
+      :first_name,
+      :last_name,
+      :password,
+      :email,
+      :image_url
     )
+  end
+
+  def user_payload
+    { user: user_params.to_h }
   end
 end

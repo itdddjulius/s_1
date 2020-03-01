@@ -7,7 +7,7 @@ class WidgetsController < ApplicationController
   # root_path GET / OR widgets_path GET    /visible/widgets(.:format)
   def index
     index_url = "#{@visible_widgets_api_url}?#{@client_params}"
-    widgets_response = RestClient.get(index_url, @auth_headers)
+    widgets_response = ShowoffAPI.get(index_url, @auth_headers)
     @widgets = Decode.json(widgets_response.body).data.widgets
   end
 
@@ -15,7 +15,7 @@ class WidgetsController < ApplicationController
   def search
     search_term = "term=#{params[:term]}"
     search_url = "#{@visible_widgets_api_url}?#{@client_params}&#{search_term}"
-    widgets_response = RestClient.get(search_url, @auth_headers)
+    widgets_response = ShowoffAPI.get(search_url, @auth_headers)
     @widgets = Decode.json(widgets_response.body).data.widgets
     
     render :index
@@ -23,24 +23,34 @@ class WidgetsController < ApplicationController
 
   # mine_widgets GET    /widgets/mine(.:format)
   def mine
-    widgets_response = RestClient.get(@my_widgets_api_url, @auth_headers)
+    widgets_response = ShowoffAPI.get(@my_widgets_api_url, @auth_headers)
     @widgets = Decode.json(widgets_response.body).data.widgets
   end
 
   # POST   /widgets(.:format)
   def create
-    widget_response = RestClient.post(@my_widgets_api_url, widget_payload, @auth_headers)
+    widget_response = ShowoffAPI.post(@my_widgets_api_url, widget_payload, @auth_headers)
     success = widget_response.code.eql?(200)
-    response_message = Decode.json(widget_response&.body).message
+    response_message = Decode.json(widget_response.body).message
     flash[success ? :notice : :error] = response_message
   end
 
   # PATCH  /widgets/:id(.:format) OR PUT    /widgets/:id(.:format)
   def update
+    url = "#{@my_widgets_api_url}/#{params[:id]}"
+    destroy_response = ShowoffAPI.put(url, widget_payload, @auth_headers)
+    flash[success ? :notice : :error] = destroy_response.message
+    
+    redirect_back fallback_location: mine_widgets_path
   end
 
   # DELETE /widgets/:id(.:format)
   def destroy
+    url = "#{@my_widgets_api_url}/#{params[:id]}"
+    destroy_response = ShowoffAPI.delete(url, @auth_headers)
+    flash[success ? :notice : :error] = destroy_response.message
+    
+    redirect_back fallback_location: mine_widgets_path
   end
 
   private
