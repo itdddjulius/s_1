@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     get :me, on: :collection
     patch :update_my_profile, on: :collection
     post :change_password
-    get :check_email
     post :reset_password, on: :collection
     get :search_widgets
   end

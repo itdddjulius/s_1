@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
   before_action :client
   before_action :auth_headers
-  before_action :authorization
   before_action :current_user
+  before_action :authorization
   before_action :client_params
 
   private
@@ -17,19 +17,16 @@ class ApplicationController < ActionController::Base
     @auth_headers.merge!('Authorization': "Bearer #{session[:access_token]}") if session[:access_token]
   end
 
+  def current_user
+    user_response = ShowoffAPI.get("#{API_V1}/users/me", @auth_headers)
+    @current_user = user_response&.data&.user
+  end
+
   def authorization
     url = "#{API_ROOT}/oauth/token"
     payload = @current_user ? refresh_payload : login_payload
     auth_response = ShowoffAPI.post(url, payload, @auth_headers)
-    if auth_response&.data
-      session[:access_token] = auth_response.data.token.access_token
-      session[:refresh_token] = auth_response.data.token.refresh_token
-    end
-  end
-
-  def current_user
-    user_response = ShowoffAPI.get("#{API_V1}/users/me", @auth_headers)
-    @current_user = user_response&.data&.user
+    set_tokens(auth_response)
   end
 
   def client_params
@@ -55,5 +52,12 @@ class ApplicationController < ActionController::Base
       client_id: @client_id,
       client_secret: @client_secret
     }
+  end
+
+  def set_tokens(response)
+    return unless response&.data
+
+    session[:access_token] = response.data.token.access_token
+    session[:refresh_token] = response.data.token.refresh_token
   end
 end

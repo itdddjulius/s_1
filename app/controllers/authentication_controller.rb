@@ -24,10 +24,7 @@ class AuthenticationController < ApplicationController
     login_response = ShowoffAPI.post(@auth_url, auth_payload, @auth_headers)
     success = login_response.code.zero?
     flash[success ? :notice : :error] = login_response.message
-    if login_response.data
-      session[:access_token] = login_response.data.token.access_token
-      session[:refresh_token] = login_response.data.token.refresh_token
-    end
+    set_tokens(login_response)
 
     redirect_back fallback_location: root_path
   end

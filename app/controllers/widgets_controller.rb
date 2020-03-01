@@ -49,6 +49,7 @@ class WidgetsController < ApplicationController
   def destroy
     url = "#{@my_widgets_api_url}/#{params[:id]}"
     destroy_response = ShowoffAPI.delete(url, @auth_headers)
+    success = destroy_response.code.zero?
     flash[success ? :notice : :error] = destroy_response.message
     
     redirect_back fallback_location: mine_widgets_path

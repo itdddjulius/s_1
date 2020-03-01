@@ -4,29 +4,34 @@
       = image_tag @user.images.large_url, alt: @user.name, size: 200
       %br
       - if @user.eql?(@current_user)
-        = link_to 'Edit profile', '#', 'data-target' => "#editUserModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary my-3'
+        .my-3
+          = link_to 'Edit profile', '#', 'data-target' => "#editUserModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
+          = link_to 'Change password', '#', 'data-target' => "#changePasswordModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
       %h5.card-title= @user.name
       %b= @user.try(:email)
       - if @user.try(:date_of_birth)
         %p.card-text
           %small.text-muted Birthdate: #{Time.at(@user.date_of_birth).strftime('%a %d %b %Y')}
 
-  .table-header.mt-3
-    .float-left
+  .table-header.mt-3.d-flex.justify-content-between
+    .left
       %h3 Widgets by #{@user.name}
-    .float-right
-      = form_tag(search_widgets_path, method: :get, class: 'form-inline my-2 my-lg-0') do
+    .right.d-flex
+      = form_tag(user_search_widgets_path(@user.id), method: :get, class: 'form-inline my-2 my-lg-0') do
         = text_field_tag :term, nil, placeholder: 'Search a widget...', class: 'form-control mr-sm-2', input_html: {"aria-label" => "Search", placeholder: "Search", type: "search"}
         = submit_tag 'Search', class: 'btn btn-outline-success my-2 my-sm-0 mx-1'
       - if @current_user.eql?(@user)
-        = link_to 'Create Widget', '#', 'data-target' => "#createWidgetModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
+        = link_to 'Create Widget', '#', 'data-target' => "#createWidgetModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary ml-1'
         = render '/widgets/create'
   %table.table
     - if @widgets.blank?
       %thead
         %td
-          = @current_user.eql?(@user) ? 'You have not' : 'This user hasn\'t'
-          created any widget :(
+          - if params[:term]
+            Any widget has been found with that search term :(
+          - else
+            = @current_user.eql?(@user) ? 'You have not' : 'This user hasn\'t'
+            created any widget :(
     - else
       %thead
         %th ID
@@ -49,3 +54,7 @@
               = link_to '#', 'data-target' => "#userShowModal-#{widget.user.id}", 'data-toggle' => 'modal', type: 'button' do
                 = image_tag widget.user.images.small_url, alt: widget.user.name, height: 30
                 %i= widget.user.name
+            %td
+              = link_to 'Edit', '#', 'data-target' => "#editWidgetModal-#{widget.id}", 'data-toggle' => 'modal'
+            %td
+              = link_to 'Delete', widget_path(widget.id), method: :delete, data: { confirm: 'Are you sure?' }

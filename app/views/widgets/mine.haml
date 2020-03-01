@@ -22,12 +22,10 @@
           %td
             %span= widget.kind
           %td
-            = link_to '#', 'data-target' => "#userShowModal-#{widget.user.id}", 'data-toggle' => 'modal', type: 'button' do
-              = image_tag widget.user.images.small_url, alt: widget.user.name, height: 30
-              %i= widget.user.name
+            = image_tag widget.user.images.small_url, alt: widget.user.name, height: 30
+            %i= widget.user.name
           %td
             = link_to 'Edit', '#', 'data-target' => "#editWidgetModal-#{widget.id}", 'data-toggle' => 'modal'
           %td
             = link_to 'Delete', widget_path(widget.id), method: :delete, data: { confirm: 'Are you sure?' }
-        = render '/users/show', user: widget.user
         = render '/widgets/edit', widget: widget

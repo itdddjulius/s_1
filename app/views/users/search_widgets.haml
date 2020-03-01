@@ -1,0 +1,5 @@
+= render 'show'
+
+- if @user.eql?(@current_user)
+  = render 'edit_modal'
+  = render 'change_password_modal'
