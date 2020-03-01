@@ -5,20 +5,16 @@ Ruby 2.5.1
 Rails 5.2.4
 
 ### Custom Gems
-// Convert html.erb to Haml
-gem 'haml-rails', '~> 2.0'
+gem 'haml-rails', '~> 2.0' # Convert html.erb to Haml
 
-// Requests to APIs
-gem 'rest-client'
+gem 'rest-client' # Requests to APIs
 
-// See errors console on web
 group :development do
-  gem 'better_errors'
+  gem 'better_errors' # See errors console on web
   gem 'binding_of_caller'
 end
 
-// Access to Hashes using dot notation
-gem 'hash_dot'
+gem 'hash_dot' # Access to Hashes using dot notation
 
 ### Install
 `$ cd Showoff`
