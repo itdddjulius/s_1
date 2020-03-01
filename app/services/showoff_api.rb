@@ -35,11 +35,6 @@ class ShowoffAPI
       rescue RestClient::ExceptionWithResponse => e
         e.response
       end
-    puts "\n\n=== HTTP_METHOD = #{http_method}"
-    puts "=== URL = #{url.split('/').last(3)}"
-    puts "=== PAYLOAD = #{payload}" if payload
-    puts "=== API_RESPONSE = #{Decode.json(api_response)&.code&.zero?}"
-    puts "=====> headers = #{headers}"
     Decode.json(api_response)
   end
 end
