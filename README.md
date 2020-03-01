@@ -1,27 +1,43 @@
-# README
+# SHOWOFF
 
-### Specifications
+This is a Showoff test that consumes an API to handle widgets and user authentication
+
+## Specifications
 Ruby 2.5.1
 Rails 5.2.4
 
-### Custom Gems
+## Custom Gems
+```ruby
 gem 'haml-rails', '~> 2.0' # Convert html.erb to Haml
+```
 
+```ruby
 gem 'rest-client' # Requests to APIs
+```
 
+```ruby
 group :development do
   gem 'better_errors' # See errors console on web
   gem 'binding_of_caller'
 end
+```
 
+```ruby
 gem 'hash_dot' # Access to Hashes using dot notation
+```
 
-### Install
-`$ cd Showoff`
-`$ bundle install`
-`rails s`
+## Installation
+```bash
+$ cd Showoff
+```
+```bash
+$ bundle install
+```
+```bash
+$ rails s
+```
 
-### User manual
+## Usage
 1 Navbar:
   - Search bar to look for some visible widgets
   - If you're logged in
