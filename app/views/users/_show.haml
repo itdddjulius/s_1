@@ -11,7 +11,7 @@
       %b= @user.try(:email)
       - if @user.try(:date_of_birth)
         %p.card-text
-          %small.text-muted Birthdate: #{Time.at(@user.date_of_birth).strftime('%a %d %b %Y')}
+          %small.text-muted Date of birth: #{Time.at(@user.date_of_birth).strftime('%a %d %b %Y')}
 
   .table-header.mt-3.d-flex.justify-content-between
     .left
