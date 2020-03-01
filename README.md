@@ -1,24 +1,62 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Specifications
+Ruby 2.5.1
+Rails 5.2.4
 
-Things you may want to cover:
+### Custom Gems
+// Convert html.erb to Haml
+gem 'haml-rails', '~> 2.0'
 
-* Ruby version
+// Requests to APIs
+gem 'rest-client'
 
-* System dependencies
+// See errors console on web
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+end
 
-* Configuration
+// Access to Hashes using dot notation
+gem 'hash_dot'
 
-* Database creation
+### Install
+`$ cd Showoff`
+`$ bundle install`
+`rails s`
 
-* Database initialization
+### User manual
+1 Navbar:
+  - Search bar to look for some visible widgets
+  - If you're logged in
+    - A dropdown with options:
+      - Link to My Profile
+      - Link to My Widgets
+      - Link to Log Out
+  - If you are not logged in
+    - Button to log in modal
+    - Button to sign up modal
 
-* How to run the test suite
+2. Landing Page:
+  - List of Visible Widgets with:
+    - ID
+    - NAME
+    - KIND
+    - USER (link to modal)
 
-* Services (job queues, cache servers, search engines, etc.)
+3. User Show (Me or ID)
+  - User's Image
+  - If (Me):
+    - Edit Profile Modal Button
+    - Change Password Modal Button
+  - User's Name
+  - User's Email
+  - User's Date of Birth
+  - List of User's widgets
+  - Search bar to look fot User's widgets
+  - Create User's Widget button
 
-* Deployment instructions
-
-* ...
+4. My Widgets
+  - List of my widgets
+  - Search bar to look fot my widgets
+  - Create Widget button
