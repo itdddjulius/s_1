@@ -12,6 +12,8 @@ gem 'haml-rails', '~> 2.0' # Convert html.erb to Haml
 gem 'rest-client' # Requests to APIs
 gem 'better_errors' # See errors console on web
 gem 'hash_dot' # Access to Hashes using dot notation
+gem 'rspec-rails', '3.8.2' # testing framework to Ruby on Rails
+gem 'shoulda-matchers', '~> 3.0' # provides RSpec- and Minitest-compatible one-liners to test common Rails functionality
 ```
 
 ## Installation
