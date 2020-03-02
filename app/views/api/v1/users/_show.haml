@@ -1,14 +1,15 @@
 .container.mb-5
   .card.mb-3
-    .card-body
-      = image_tag @user.images.large_url, alt: @user.name, size: 200
-      %br
-      - if @user.eql?(@current_user)
-        .my-3
-          = link_to 'Edit profile', '#', 'data-target' => "#editUserModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
-          = link_to 'Change password', '#', 'data-target' => "#changePasswordModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
-      %h5.card-title= @user.name
-      %b= @user.try(:email)
+    .card-body.d-flex
+      .image
+        = image_tag @user.images.large_url, alt: @user.name, size: 200
+      .info
+        %h5.card-title= @user.name
+        %b= @user.try(:email)
+        - if @user.eql?(@current_user)
+          .my-3
+            = link_to 'Edit profile', '#', 'data-target' => "#editUserModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
+            = link_to 'Change password', '#', 'data-target' => "#changePasswordModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary'
 
   .table-header.mt-3.d-flex.justify-content-between
     .left
@@ -19,7 +20,7 @@
         = submit_tag 'Search', class: 'btn btn-outline-success my-2 my-sm-0 mx-1'
       - if @current_user.eql?(@user)
         = link_to 'Create Widget', '#', 'data-target' => "#createWidgetModal", 'data-toggle' => 'modal', type: 'button', class: 'btn btn-primary ml-1'
-        = render '/widgets/create'
+        = render '/api/v1/widgets/create'
   %table.table
     - if @widgets.blank?
       %thead
@@ -55,4 +56,4 @@
               = link_to 'Edit', '#', 'data-target' => "#editWidgetModal-#{widget.id}", 'data-toggle' => 'modal'
             %td
               = link_to 'Delete', widget_path(widget.id), method: :delete, data: { confirm: 'Are you sure?' }
-          = render '/widgets/edit', widget: widget
+          = render '/api/v1/widgets/edit', widget: widget

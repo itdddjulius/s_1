@@ -25,6 +25,11 @@ bundle install
 rails s
 ```
 
+## Testing
+```bash
+rspec
+```
+
 ## Usage
 1. Navbar:
   - Search bar to look for some visible widgets

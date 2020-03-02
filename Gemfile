@@ -39,6 +39,12 @@ gem 'bootsnap', '>= 1.1.0', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # rspec-rails brings the RSpec testing framework to Ruby on Rails as a drop-in 
+  # alternative to its default testing framework, Minitest.
+  gem 'rspec-rails', '3.8.2'
+  # Shoulda Matchers provides RSpec- and Minitest-compatible one-liners to test common Rails functionality that, 
+  # if written by hand, would be much longer, more complex, and error-prone.
+  gem 'shoulda-matchers', '~> 3.0', require: false
 end
 
 group :development do
@@ -48,6 +54,10 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
+  # Better Errors replaces the standard Rails error page with a much better and
+  # more useful error page. It is also usable outside of Rails in any Rack app as Rack middleware.
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :test do
@@ -61,26 +71,13 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-# Custom gems
+### Custom gems
 
 # Convert html.erb to Haml
 gem 'haml-rails', '~> 2.0'
 
 # Requests to APIs
 gem 'rest-client'
-
-group :development do
-  # Better Errors replaces the standard Rails error page with a much better and
-  # more useful error page. It is also usable outside of Rails in any Rack app as Rack middleware.
-  gem 'better_errors'
-  gem 'binding_of_caller'
-  # rspec-rails brings the RSpec testing framework to Ruby on Rails as a drop-in 
-  # alternative to its default testing framework, Minitest.
-  gem 'rspec-rails', '3.8.2'
-  # Shoulda Matchers provides RSpec- and Minitest-compatible one-liners to test common Rails functionality that, 
-  # if written by hand, would be much longer, more complex, and error-prone.
-  gem 'shoulda-matchers', '~> 3.0', require: false
-end
 
 # Access to Hashes using dot notation
 gem 'hash_dot'
