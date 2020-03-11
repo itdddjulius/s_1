@@ -67,9 +67,10 @@ rspec
   - Search bar to look fot my widgets
   - Create Widget button
 
+## Demo
+[Go to app](https://showwoff.herokuapp.com/)
 
 ## Author 
 Julius Olatokunbo
 www.raiiar.com
 info@raiiar.com
-[Go to app](https://showwoff.herokuapp.com/)
