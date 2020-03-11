@@ -67,4 +67,9 @@ rspec
   - Search bar to look fot my widgets
   - Create Widget button
 
-[Go to app](https://showoff-anyelo-test.herokuapp.com/)
+
+## Author 
+Julius Olatokunbo
+www.raiiar.com
+info@raiiar.com
+[Go to app](https://showwoff.herokuapp.com/)
